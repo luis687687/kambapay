@@ -1,11 +1,12 @@
-import SoftGradientOne from "../components/soft-gradients/soft-gradient-one";
+import LimitedArea from "../components/limited-area";
+
 
 export default function Home(){
 
 
   return(
-    <div className="w-full h-full">
-      <SoftGradientOne />
-    </div>
+   <LimitedArea>
+    <div />
+   </LimitedArea>
   )
 }

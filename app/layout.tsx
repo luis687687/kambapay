@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import SoftGradientOne from "./components/soft-gradients/soft-gradient-one";
 
 
 export const metadata: Metadata = {
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <SoftGradientOne />
+        <div className="w-full h-full absolute backdrop-blur-[140px]">
+          {children}
+        </div>
       </body>
     </html>
   );
