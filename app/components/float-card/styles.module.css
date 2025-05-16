@@ -1,0 +1,23 @@
+
+
+.area {
+  width: 100%;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: -3px 0px 20px #2196f30f;
+  border: 1px solid white;
+  
+}
+
+.areaflex{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--space);
+   padding: var(--space);
+   background: transparent;
+   backdrop-filter: blur(25px);
+
+}

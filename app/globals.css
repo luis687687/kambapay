@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+
+
+
+:root {
+  --space: 28px;
+
+
+  --color-enphase: yellow;
+  --color-enphase-black: orange;
+  --color-title: #232345;
+  --color-main: white;
+}
+
+
 * {
   font-family: nunito;
 }
@@ -11,11 +25,18 @@ body {
   
    
 }
-*{
-  margin: 0 auto;
-}
+
 
   @font-face {
     font-family: nunito;
     src: url("./fonts/font.ttf");
+  }
+
+
+
+
+  .title {
+    color: var(--color-title);
+    font-weight: 900;
+    font-size: 48px
   }

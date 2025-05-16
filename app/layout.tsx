@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import SoftGradientOne from "./components/soft-gradients/soft-gradient-one";
+import TopBar from "./components/top-bar";
 
 
 export const metadata: Metadata = {
@@ -18,7 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SoftGradientOne />
-        <div className="w-full h-full absolute backdrop-blur-[140px]">
+        <div className="w-full h-full absolute backdrop-blur-[100px]">
+          <TopBar />
           {children}
         </div>
       </body>

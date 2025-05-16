@@ -1,0 +1,24 @@
+.area {
+  outline: none;
+  border: 1px solid transparent;
+  background-color: var(--color-enphase-black);
+  padding: 14px 18px;
+  
+  text-transform: uppercase;
+  color: white;
+  font-weight: 700;
+  border-radius: 50px;
+  border-start-start-radius: 0px;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  transition: 0.5s;
+  font-size: 13px;
+  
+}
+
+.area:hover{
+  border-color: var(--color-enphase-black);
+  background: transparent;
+  color: var(--color-enphase-black);
+}

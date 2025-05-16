@@ -1,0 +1,17 @@
+.menu {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  justify-content: center;
+  gap: calc(var(--space)*2);
+  
+}
+
+.menu li {
+  font-weight: 600;
+}
+
+
+.area {
+  padding-top: var(--space);
+}

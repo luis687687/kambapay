@@ -1,16 +1,16 @@
 
 
 export default function LimitedArea({
-    children
+    children, className
 } : {
-    children: React.ReactNode
+    children: React.ReactNode, className?: string
 
 }){
 
 
     return (
-        <div className="w-full max-w-[1000px] m-auto  h-[100px]">
-
+        <div className={`w-full max-w-[1000px] m-auto  h-[100px] ${className} ` }>
+            {children}
         </div>
     )
 }

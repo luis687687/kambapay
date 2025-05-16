@@ -1,4 +1,4 @@
-import { transform } from "next/dist/build/swc/generated-native";
+
 
 
 export default function SoftGradientOne () {
@@ -10,7 +10,7 @@ export default function SoftGradientOne () {
       <div 
         style={{
           backgroundColor: "#21f3d3",
-          opacity: "0.5"
+          opacity: "0.2"
         }}
         className="w-80 rounded-full h-50  mt-[-30px] ml-[-50px] absolute"
       />
@@ -21,7 +21,7 @@ export default function SoftGradientOne () {
           right: "150px",
           position: "absolute",
           transform: "scale(1.2)",
-          opacity: "0.5"
+          opacity: "0.2"
         }}
         className="w-100 rounded-full h-80  mt-[-110px] absolute"
       />
@@ -44,7 +44,7 @@ export default function SoftGradientOne () {
           backgroundColor: "orange",
           left: "60%",
           position: "absolute",
-          transform: "scale(1.2)",
+          transform: "scale(1.1)",
           top: "70%",
           borderRadius: "30px",
           opacity: "0.6"
