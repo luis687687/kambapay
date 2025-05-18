@@ -44,7 +44,7 @@ export function FloatingParticles({
               cy={startY}
               r={size}
               fill={color}
-              opacity="0.6"
+              opacity="1"
             >
               {/* Animação horizontal */}
               <animate

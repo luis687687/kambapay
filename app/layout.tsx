@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import SoftGradientOne from "./components/soft-gradients/soft-gradient-one";
-import TopBar from "./components/top-bar";
-import { FloatingParticles } from "./components/animations/FloatParticle";
+
 
 
 export const metadata: Metadata = {
@@ -19,23 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <SoftGradientOne /> */}
-            {/* <div className="relative bg-white"> */}
-            {/* Partículas muito sutis no fundo */}
-            <div className="fixed inset-0 pointer-events-none opacity-5">
-              <FloatingParticles 
-                particleCount={20}
-                colors={['#3b82f9']}
-                minSize={1}
-                maxSize={3}
-                speed={1}
-              />
-            </div>
-            
-            <main className="relative z-10">
-              {children}
-            </main>
-          {/* </div> */}
+        {children}
       </body>
     </html>
   );

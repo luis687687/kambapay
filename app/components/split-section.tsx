@@ -5,7 +5,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function SplitContentSection() {
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row gap-12 lg:gap-20">
           {/* Coluna esquerda - Texto */}

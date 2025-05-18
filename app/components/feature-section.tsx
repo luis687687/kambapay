@@ -19,7 +19,7 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 ">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Como fazemos sua compra ser perfeita</h2>
