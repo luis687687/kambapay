@@ -182,7 +182,7 @@ export function SignUpForm() {
             </div>
 
             {/* Termos e Condições */}
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <input
                 id="terms"
                 name="terms"
@@ -200,7 +200,7 @@ export function SignUpForm() {
                   Política de Privacidade
                 </Link>
               </label>
-            </div>
+            </div> */}
 
             {/* Botão de Submissão */}
             <div>
@@ -216,34 +216,7 @@ export function SignUpForm() {
             </div>
           </form>
 
-          {/* Divisor */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
-                Ou cadastre-se com
-              </span>
-            </div>
-          </div>
-
-          {/* Login Social */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-200 rounded-lg bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-50 transition-colors"
-            >
-              Google
-            </button>
-
-            <button
-              type="button"
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-200 rounded-lg bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-50 transition-colors"
-            >
-              Facebook
-            </button>
-          </div>
+        
         </div>
       </main>
 
@@ -251,7 +224,9 @@ export function SignUpForm() {
       <footer className="bg-white border-t border-gray-100 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} buyAssist. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} 
+             <Link href={"/"}>kambaPay</Link>
+            . Todos os direitos reservados.
           </p>
         </div>
       </footer>
