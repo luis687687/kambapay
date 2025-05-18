@@ -2,7 +2,7 @@
 // components/auth/AuthForm.js
 import { useState } from 'react';
 import { ArrowRightIcon, EnvelopeIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline';
-
+import Link from "next/Link"
 export function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -30,12 +30,12 @@ export function AuthForm() {
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               {isLogin ? 'Ou ' : 'Já tem uma conta? '}
-              <button
-                onClick={() => setIsLogin(!isLogin)}
+              <Link
+                href={"/signup"}
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 {isLogin ? 'crie uma conta' : 'acesse aqui'}
-              </button>
+              </Link>
             </p>
           </div>
 
