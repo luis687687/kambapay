@@ -39,15 +39,7 @@ export function SignUpForm() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* TopBar simplificada */}
-      <header className="sticky top-0 z-10 bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">buyAssist</h1>
-          <Link href="/about" className="text-sm text-gray-600 hover:text-blue-500 transition-colors">
-            Saiba mais
-          </Link>
-        </div>
-      </header>
+     
 
       {/* Conteúdo principal */}
       <main className="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">

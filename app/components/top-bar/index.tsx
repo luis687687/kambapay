@@ -1,8 +1,11 @@
 // components/TopBar.js
 import { MagnifyingGlassIcon, BellIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import { Avatar } from './avatar'; // Componente de avatar personalizado
+import {APP_ROUTE} from "@/utils/constants"
+import Link from "next/Link"
 
 export function TopBar() {
+  
   return (
     <header className="sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,18 +22,18 @@ export function TopBar() {
           {/* Logo e Navegação Primária */}
           <div className="flex items-center space-x-6">
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-gray-900">buyAssist</h1>
+              <h1 className="text-xl font-bold text-gray-900">kambaPay</h1>
             </div>
             
             <nav className="hidden md:flex space-x-8">
-              {['Dashboard', 'Solicitações', 'Histórico', 'Assistentes'].map((item) => (
-                <a
-                  key={item}
-                  href="#"
+              {APP_ROUTE.map((item, index) => (
+                <Link 
+                  key={index}
+                  href={item.path}
                   className="text-gray-700 hover:text-blue-600 px-1 py-2 text-sm font-medium transition-colors duration-200"
                 >
-                  {item}
-                </a>
+                  {item.name}
+                </Link>
               ))}
             </nav>
           </div>
