@@ -1,35 +1,66 @@
+// utils/constants.ts
+import { 
+  HomeIcon, 
+  PlusCircleIcon, 
+  ClockIcon, 
+  Cog6ToothIcon,
+  InformationCircleIcon,
+  EnvelopeIcon,
+  ShieldCheckIcon,
+  DocumentTextIcon
+} from '@heroicons/react/24/outline';
+
 export const APP_ROUTE = [
   {
-    name: "Home", path: "/"
-  },
-  // {
-  //   name: "Login", path: "/login"
-  // },
-  // {
-  //   name: "Sign Up", path: "/signup"
-  // },
-  {
-    name: "Solicitar", path: "/pages/request"
+    name: "Home",
+    path: "/",
+    icon: HomeIcon,
+    auth: false
   },
   {
-    name: "Histórico", path: "/pages/history"
+    name: "Solicitar",
+    path: "/request",
+    icon: PlusCircleIcon,
+    auth: true
   },
+  {
+    name: "Histórico",
+    path: "/history",
+    icon: ClockIcon,
+    auth: true
+  },
+  // Rotas adicionais podem ser descomentadas conforme necessidade
   // {
-  //   name: "Settings", path: "/settings"
+  //   name: "Configurações",
+  //   path: "/settings",
+  //   icon: Cog6ToothIcon,
+  //   auth: true
   // },
   // {
-  //   name: "About", path: "/about"
+  //   name: "Sobre",
+  //   path: "/about",
+  //   icon: InformationCircleIcon,
+  //   auth: false
   // },
   // {
-  //   name: "Contact", path: "/contact"
+  //   name: "Contato",
+  //   path: "/contact",
+  //   icon: EnvelopeIcon,
+  //   auth: false
   // },
   // {
-  //   name: "Privacy Policy", path: "/privacy-policy"
+  //   name: "Privacidade",
+  //   path: "/privacy",
+  //   icon: ShieldCheckIcon,
+  //   auth: false
   // },
   // {
-  //   name: "Terms of Service", path: "/terms-of-service"
-  // },
-  // {
-  //   name: "404 Not Found", path: "/404"
+  //   name: "Termos",
+  //   path: "/terms",
+  //   icon: DocumentTextIcon,
+  //   auth: false
   // }
-]
+] as const;
+
+// Tipo para as rotas
+export type AppRoute = typeof APP_ROUTE[number];

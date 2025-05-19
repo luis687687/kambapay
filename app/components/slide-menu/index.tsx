@@ -1,31 +1,38 @@
 "use client";
-// components/SidebarMenu.tsx
 import { useState, useEffect, useContext } from 'react';
 import Link from "next/link";
 import styles from "./styles.module.css";
-import { XMarkIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/outline';
+import { 
+  XMarkIcon, 
+  Bars3BottomLeftIcon,
+  UserCircleIcon,
+  ArrowRightOnRectangleIcon,
+  UserPlusIcon,
+  ChevronRightIcon
+} from '@heroicons/react/24/outline';
 import { AuthContext } from '@/app/context/auth-context';
 import { APP_ROUTE } from '@/utils/constants';
-import { TopBar, TopBarLogo } from '../top-bar';
+import { TopBarLogo } from '../top-bar';
+import { Avatar } from '../top-bar/avatar';
 
 export function SidebarMenu() {
-    
-    const { isOpen, setIsOpen } = useContext(AuthContext);
-    const [isMobile, setIsMobile] = useState(false);
+  const { isOpen, setIsOpen, user, logout } = useContext(AuthContext);
+  const [isMobile, setIsMobile] = useState(false);
 
-//   // Verifica o tamanho da tela
-//   useEffect(() => {
-//     const checkMobile = () => {
-//       setIsMobile(window.innerWidth < 768);
-//       setIsOpen(!isMobile); // Fecha menu no mobile inicialmente
-//     };
+  useEffect(() => {
 
-//     checkMobile();
-//     window.addEventListener('resize', checkMobile);
-//     return () => window.removeEventListener('resize', checkMobile);
-//   }, []);
+    console.log("isOpen", user);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setIsOpen(true); // Mantém aberto em desktop
+    };
 
-  // Fecha menu ao pressionar ESC
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
@@ -37,19 +44,6 @@ export function SidebarMenu() {
 
   return (
     <>
-      {/* Botão Toggle */}
-      {/* <button
-        className={styles.menuToggle}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
-      >
-        {isOpen ? (
-          <XMarkIcon className="w-6 h-6" />
-        ) : (
-          <Bars3BottomLeftIcon className="w-6 h-6" />
-        )}
-      </button> */}
-
       {/* Overlay para mobile */}
       {isMobile && isOpen && (
         <div 
@@ -77,15 +71,60 @@ export function SidebarMenu() {
         </div>
         
         <Menu className={styles.navList} />
+
+        {/* Seção do Usuário */}
+        <div className={styles.userSection}>
+          {user?.user_id ? (
+            <>
+              <div className={styles.userInfo}>
+                <Avatar 
+                  src={user.avatar} 
+                  alt={user.user_name} 
+                  size="sm"
+                />
+                <div>
+                  <p className={styles.userName}>{user.user_name}</p>
+                  <p className={styles.userEmail}>{user.user_email}</p>
+                </div>
+              </div>
+              <button 
+                onClick={logout}
+                className={styles.logoutButton}
+              >
+                <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                Sair
+              </button>
+            </>
+          ) : (
+            <div className={styles.authButtons}>
+              <Link 
+                href="/login" 
+                className={styles.authButtonPrimary}
+                onClick={() => setIsOpen(false)}
+              >
+                <UserCircleIcon className="w-5 h-5" />
+                Entrar
+                <ChevronRightIcon className="w-4 h-4 ml-auto" />
+              </Link>
+              <Link 
+                href="/signup" 
+                className={styles.authButtonSecondary}
+                onClick={() => setIsOpen(false)}
+              >
+                <UserPlusIcon className="w-5 h-5" />
+                Criar conta
+              </Link>
+            </div>
+          )}
+        </div>
       </nav>
     </>
   );
 }
 
-// Componente de itens do menu
 function Menu({ className }: { className?: string }) {
-    
-    const { isOpen, setIsOpen } = useContext(AuthContext);
+  const { setIsOpen } = useContext(AuthContext);
+  
   return (
     <ul className={`${styles.menu} ${className || ''}`}>
       {APP_ROUTE.map((item, i) => (
@@ -95,6 +134,7 @@ function Menu({ className }: { className?: string }) {
             className={styles.menuLink}
             onClick={() => window.innerWidth < 768 && setIsOpen(false)}
           >
+            {item.icon && <item.icon className="w-5 h-5 mr-3" />}
             {item.name}
           </Link>
         </li>

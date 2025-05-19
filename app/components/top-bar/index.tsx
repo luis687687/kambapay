@@ -74,7 +74,7 @@ export function TopBar() {
             <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
             {/* Área de Autenticação */}
-            {user ? (
+            {user?.user_id ? (
               // Usuário logado - Mostrar Avatar
               <div className="flex items-center space-x-3">
                 <button className="flex items-center space-x-2 focus:outline-none group">
