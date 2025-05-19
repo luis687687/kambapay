@@ -3,25 +3,36 @@ export default function HeroSection() {
   return (
     <section className="py-28 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
-          <span className="text-blue-600 text-sm font-medium">
+        <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6" 
+        data-aos="fade-up"
+        data-aos-delay="900">
+          <span className="text-blue-600 text-sm font-medium" >
             Novidade: Agora com suporte para eBay
           </span>
         </div>
         
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight"
+        data-aos="fade-up"
+        data-aos-duration="1300"
+        >
           Compras internacionais <span className="text-blue-500">sem complicação</span>
         </h1>
         
-        <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto" data-aos="zoom-in" 
+        >
           Conectamos você a compradores especializados que te ajudam a encontrar exatamente o que precisa nos melhores sites internacionais.
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-md">
+          <button 
+            data-aos="fade-up"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-md">
             Comece agora - é grátis
           </button>
-          <button className="border border-gray-300 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm">
+          <button 
+          data-aos="fade-up"
+          data-aos-delay="300"
+          className="border border-gray-300 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm">
             Ver demonstração
           </button>
         </div>

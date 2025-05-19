@@ -1,3 +1,5 @@
+"use client";
+import { useEffect } from "react";
 import AdvantageSection from "../components/advantage-section";
 import ComparisonSection from "../components/comparison-section";
 import CTA from "../components/cta";
@@ -13,7 +15,9 @@ import SplitContentSection from "../components/split-section";
 import StepSection from "../components/steps-section";
 
 
+
 export default function Home(){
+
 
 
   return(

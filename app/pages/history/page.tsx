@@ -18,6 +18,7 @@ import { listRequestsByUser } from '@/app/services/requestServices';
 import { AuthContext } from '@/app/context/auth-context';
 import { useContext } from 'react';
 import { list } from 'postcss';
+import { Loading } from '@/app/components/loading';
 
 
 type RequestStatus = 'completed' | 'processing' | 'cancelled' | 'shipped';
@@ -37,43 +38,6 @@ export default function HistoryPage() {
   const { user } = useContext(AuthContext);
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
-  // Dados de exemplo
-  // const requests: RequestItem[] = [
-  //   {
-  //     id: 'RQ-78945',
-  //     product: 'iPhone 15 Pro 256GB - Azul',
-  //     date: '15/05/2023',
-  //     status: 'completed',
-  //     price: 'R$ 5.799,00',
-  //     trackingCode: 'AB123456789BR',
-  //     lastUpdate: 'Entregue em 22/05/2023'
-  //   },
-  //   {
-  //     id: 'RQ-78946',
-  //     product: 'Nike Air Jordan 1 Retro High OG',
-  //     date: '18/05/2023',
-  //     status: 'shipped',
-  //     price: 'R$ 1.299,00',
-  //     trackingCode: 'CD987654321BR',
-  //     lastUpdate: 'Enviado em 20/05/2023'
-  //   },
-  //   {
-  //     id: 'RQ-78947',
-  //     product: 'PlayStation 5 + Controle Extra',
-  //     date: '20/05/2023',
-  //     status: 'processing',
-  //     price: 'R$ 4.599,00',
-  //     lastUpdate: 'Em negociação com vendedor'
-  //   },
-  //   {
-  //     id: 'RQ-78948',
-  //     product: 'Relógio Casio G-Shock DW5600',
-  //     date: '10/05/2023',
-  //     status: 'cancelled',
-  //     price: 'R$ 899,00',
-  //     lastUpdate: 'Cancelado em 12/05/2023'
-  //   },
-  // ];
 
 
   const [requests, setRequests] = useState<RequestItem[]>([]);
@@ -152,6 +116,15 @@ export default function HistoryPage() {
     
     }, []);
 
+
+    useEffect(() => {
+      if(!user?.user_id)
+        router.push("/login")
+    }, [user]);
+  
+    if(!user?.user_id)
+      return <Loading showProgress loadingText="Carregando recursos..." />;
+  
 
   return (
     <>

@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { ArrowRightIcon, EnvelopeIcon, LockClosedIcon, UserIcon, PhoneIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { signUp } from '@/app/services/userServices';
+import { Loading } from '../loading';
+import { useRouter } from 'next/navigation';
+import { useEffect, useContext } from 'react';
+import { AuthContext } from '@/app/context/auth-context';
 
 interface FormData {
   firstName: string;
@@ -23,6 +27,9 @@ export function SignUpForm() {
     password: '',
     confirmPassword: ''
   });
+
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,6 +60,14 @@ export function SignUpForm() {
     }
     
   };
+    useEffect(() => {
+      if(user.user_id)
+        router.push("/")
+    }, [user]);
+  
+    if(user.user_id)
+      return <Loading showProgress loadingText="Carregando recursos..." />;
+  
 
   return (
     <div className="min-h-screen bg-white flex flex-col">

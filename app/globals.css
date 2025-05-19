@@ -65,3 +65,20 @@ body {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); opacity: 0; }
+  50% { transform: translateY(-10px); opacity: 1; }
+}
+
+.animate-spin {
+  animation: spin 1.2s linear infinite;
+}
+
+.animate-float {
+  animation: float 1.5s ease-in-out infinite;
+}

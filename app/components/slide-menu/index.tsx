@@ -25,7 +25,7 @@ export function SidebarMenu() {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      if (!mobile) setIsOpen(true); // Mantém aberto em desktop
+      if (!mobile) setIsOpen(false); // Mantém aberto em desktop
     };
 
     checkMobile();

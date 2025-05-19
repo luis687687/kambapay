@@ -22,8 +22,8 @@ export default function FeaturesSection() {
     <section className="py-20 px-4 ">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Como fazemos sua compra ser perfeita</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4" data-aos="fade-up">Como fazemos sua compra ser perfeita</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto" data-aos="zoom-in">
             Toda a tecnologia e expertise que você precisa para comprar no exterior com confiança
           </p>
         </div>
@@ -33,6 +33,8 @@ export default function FeaturesSection() {
             <div 
               key={index}
               className="bg-white p-8 rounded-xl border border-gray-200 hover:border-blue-200 transition-all duration-300 hover:shadow-sm"
+              data-aos="fade-up"
+              data-aos-delay={`${index * 150 + 200}`}
             >
               <div className="text-3xl mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2 text-gray-900">{feature.title}</h3>

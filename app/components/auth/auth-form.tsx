@@ -1,36 +1,37 @@
 "use client"
 // components/auth/AuthForm.js
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { ArrowRightIcon, EnvelopeIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from "next/Link"
 import { AuthContext } from "@/app/context/auth-context"
+import { useRouter } from 'next/navigation';
+import { Loading } from '../loading';
 
 export function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const {signIn} = useContext(AuthContext)
+  const {signIn, user} = useContext(AuthContext)
+  const router = useRouter();
+
+  useEffect(() => {
+    if(user.user_id)
+      router.push("/")
+  }, [user]);
+
+  if(user.user_id)
+    return <Loading showProgress loadingText="Carregando recursos..." />;
 
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* TopBar simplificada */}
-      {/* <header className="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">buyAssist</h1>
-          <button className="text-sm text-gray-600 hover:text-blue-600">
-            Saiba mais
-          </button>
-        </div>
-      </header> */}
 
-      {/* Conteúdo principal */}
       <main className="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h2 className="mt-6 text-3xl font-bold text-gray-900">
-              {isLogin ? 'Acesse sua conta' : 'Crie sua conta'}
+              {isLogin ? 'Acesse sua conta' : 'Crie sua conta'} 
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               {isLogin ? 'Ou ' : 'Já tem uma conta? '}

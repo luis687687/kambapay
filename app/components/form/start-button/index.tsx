@@ -3,7 +3,7 @@ export default function StartButton () {
 
 
   return(
-    <button className={styles.area}>
+    <button className={styles.area} data-aos="fade-right">
       Faça a sua encomenda
     </button>
   )

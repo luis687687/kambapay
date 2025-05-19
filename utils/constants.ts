@@ -19,13 +19,13 @@ export const APP_ROUTE = [
   },
   {
     name: "Solicitar",
-    path: "/request",
+    path: "/pages/request",
     icon: PlusCircleIcon,
     auth: true
   },
   {
     name: "Histórico",
-    path: "/history",
+    path: "/pages/history",
     icon: ClockIcon,
     auth: true
   },

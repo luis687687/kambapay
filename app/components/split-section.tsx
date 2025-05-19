@@ -14,15 +14,17 @@ export default function SplitContentSection() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
             >
-              <span className="inline-block text-blue-600 font-medium mb-3">
+              <span className="inline-block text-blue-600 font-medium mb-3" data-aos="fade-up">
                 Compra Assistida
               </span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6" data-aos="fade-up"
+              data-aos-delay="100"
+              >
                 Gerencie suas compras internacionais de ponta a ponta
               </h2>
-              <p className="text-lg text-gray-600 mb-8">
+              <p className="text-lg text-gray-600 mb-8" data-aos="zoom-in">
                 Tenha total visibilidade e controle sobre cada etapa do processo de compra, desde a pesquisa até a entrega na sua porta.
               </p>
               
@@ -33,7 +35,9 @@ export default function SplitContentSection() {
                   "Histórico completo de todas as compras",
                   "Suporte dedicado para cada solicitação"
                 ].map((feature, index) => (
-                  <div key={index} className="flex items-start">
+                  <div key={index} className="flex items-start" data-aos="fade-right"
+                    data-aos-delay={`${index * 100 + 200}`}
+                  >
                     <div className="flex-shrink-0 mt-1">
                       <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
                         <div className="w-2 h-2 rounded-full bg-blue-600"></div>
@@ -59,7 +63,7 @@ export default function SplitContentSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 className="bg-white border border-gray-200 rounded-xl p-6 shadow-xs"
               >
                 <div className="flex items-center justify-between mb-4">
@@ -97,7 +101,7 @@ export default function SplitContentSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 className="bg-white border border-gray-200 rounded-xl p-6 shadow-xs"
               >
                 <div className="flex items-center justify-between mb-4">
@@ -131,7 +135,7 @@ export default function SplitContentSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 className="bg-white border border-gray-200 rounded-xl p-6 shadow-xs border-l-4 border-l-orange-500"
               >
                 <div className="flex items-center justify-between mb-4">

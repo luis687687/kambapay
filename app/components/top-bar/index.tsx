@@ -12,13 +12,15 @@ import { Avatar } from './avatar';
 import { APP_ROUTE } from "@/utils/constants";
 import { AuthContext } from "@/app/context/auth-context";
 
+import { useRouter } from 'next/navigation';
 
 import Link from "next/link";
 
 export function TopBar() {
   // Estado para simular autenticação - na prática viria de um contexto/state global
   
-  const { user , isOpen, setIsOpen} = useContext(AuthContext);
+  const { user , isOpen, setIsOpen, logout} = useContext(AuthContext);
+  const router = useRouter();
   return (
     <header className="sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,16 +61,21 @@ export function TopBar() {
             <button 
               className="p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all duration-200"
               aria-label="Notificações"
+              onClick={() => router.push('/pages/history')}
             >
               <BellIcon className="h-5 w-5" />
             </button>
 
-            <button 
-              className="p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-              aria-label="Ajuda"
-            >
-              <QuestionMarkCircleIcon className="h-5 w-5" />
-            </button>
+            {
+              user?.user_id &&
+              <button 
+                className="hidden md:block p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all duration-200"
+                aria-label="Ajuda"
+                onClick={() =>  logout()}
+                
+              >
+                <ArrowRightOnRectangleIcon className="h-5 w-5" color='#f98000'/>
+              </button>}
 
             {/* Divisor */}
             <div className="h-6 w-px bg-gray-200 mx-2"></div>
