@@ -4,7 +4,7 @@ DATABASE_CONFIG = {
     "host": "localhost",
     "user": "root",
     "password": "",
-    "database": "game"
+    "database": "kamba"
 }
 
 # Conexão

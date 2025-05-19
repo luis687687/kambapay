@@ -12,7 +12,7 @@ export const APP_ROUTE = [
     name: "Solicitar", path: "/pages/request"
   },
   {
-    name: "Histórico", path: "/requests"
+    name: "Histórico", path: "/pages/history"
   },
   // {
   //   name: "Settings", path: "/settings"

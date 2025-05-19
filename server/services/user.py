@@ -8,19 +8,22 @@ from datetime import datetime
 from .._utils import hash_password, check_password
 from ..db.db import cmd
 
-def create_new_account(name="", email="", password="", image = ""):
-  user_id = create_user(f" '{name}' ")
-  crypto = hash_password(password)
-  create_account(userid=user_id, password=crypto, email=email, image=image)
-  session = create_session(user_id)
-  return {"user_id":user_id, "session_id": session}
+def create_new_account(name="", email="", password="", image = "", nicname="", phone=""):
+  try:
+    user_id = create_user(f" '{name}', '{nicname}' ")
+    crypto = hash_password(password)
+    create_account(userid=user_id, password=crypto, email=email, image=image)
+    session = create_session(user_id)
+    return {"user_id":user_id, "session_id": session}
+  except:
+    return {"error": "erro ao criar a conta"}
 
 
 def login(email, password):
     q = f"""
     select *, user.id as user_id from user inner join account where account.email = '{email}' 
     and user.id = account.user_id 
-    and account.status = '1'"""
+    """
     cmd.execute(q)
     datas = cmd.fetchall()
     print(f"{datas} aqui !!! {q}")
@@ -151,6 +154,6 @@ def get_sessions(search=""):
 
 
 
-# create_new_account("ana", "ana@m", "123")
+#create_new_account("ana", "ana@m", "123")
 # print(login('ana@m', "123"))
 #print(get_sessions())

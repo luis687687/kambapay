@@ -1,9 +1,12 @@
 "use client"
 // pages/request.tsx
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRightIcon, ShoppingCartIcon, MapPinIcon, CreditCardIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import Head from 'next/head';
+import { AuthContext } from "@/app/context/auth-context"
+import { createRequestWithDelivery } from "@/app/services/requestServices";
+
 
 type FormData = {
   productDescription: string;
@@ -18,6 +21,8 @@ type FormData = {
 
 export default function RequestPage() {
   const router = useRouter();
+  const {user} = useContext(AuthContext)
+
   const [formData, setFormData] = useState<FormData>({
     productDescription: '',
     productLink: '',
@@ -37,12 +42,40 @@ export default function RequestPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Aqui você faria a submissão para a API
-    console.log('Dados da solicitação:', formData);
-    router.push('/pages/request-success');
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!user?.user_id) {
+    alert("Usuário não autenticado");
+    return;
+  }
+
+  try {
+    // opcional: mostrar um loader aqui...
+    await createRequestWithDelivery({
+      user_id: user.user_id,
+      description: formData.productDescription,
+      link: formData.productLink,
+      // não temos budget no backend, então ignoramos formData.budget
+      prestations: formData.installments,
+      status: 0, // status inicial
+      phone: formData.contactPhone,
+      email: formData.contactEmail,
+      address: formData.deliveryAddress,
+      obs: formData.additionalNotes,
+    });
+
+    // redireciona após sucesso
+    router.push("/pages/request-success");
+  } catch (err: any) {
+    // tratar erro
+    console.error(err);
+    alert(err.message || "Erro ao enviar solicitação");
+  } finally {
+    // opcional: esconder loader
+  }
+};
+
 
   return (
     <>
@@ -53,7 +86,7 @@ export default function RequestPage() {
       <div className="min-h-screen ">
 
 
-        <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+        <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12 ">
           {/* Cabeçalho */}
           <div 
             className="text-center mb-12"
@@ -68,7 +101,7 @@ export default function RequestPage() {
           </div>
 
           {/* Formulário */}
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8 grid grid-cols-2 gap-x-6">
             {/* Seção 1: Detalhes do Produto */}
             <div 
               className="bg-white rounded-xl border border-gray-200 p-6 sm:p-8"
@@ -114,21 +147,7 @@ export default function RequestPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-1">
-                      Orçamento aproximado *
-                    </label>
-                    <input
-                      id="budget"
-                      name="budget"
-                      type="text"
-                      required
-                      value={formData.budget}
-                      onChange={handleChange}
-                      className="block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-50 sm:text-sm transition-colors"
-                      placeholder="R$ 0,00"
-                    />
-                  </div>
+                
 
                   <div>
                     <label htmlFor="installments" className="block text-sm font-medium text-gray-700 mb-1">
@@ -183,7 +202,7 @@ export default function RequestPage() {
                         value={formData.contactPhone}
                         onChange={handleChange}
                         className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-50 sm:text-sm transition-colors"
-                        placeholder="(00) 00000-0000"
+                        placeholder="(244) 9xx xxx xxx"
                       />
                     </div>
                   </div>
@@ -221,7 +240,7 @@ export default function RequestPage() {
                     value={formData.deliveryAddress}
                     onChange={handleChange}
                     className="block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-50 sm:text-sm transition-colors"
-                    placeholder="Rua, número, complemento, CEP, cidade"
+                    placeholder="Rua, bairro, município, cidade"
                   />
                 </div>
 
@@ -244,7 +263,7 @@ export default function RequestPage() {
 
             {/* Seção 3: Método de Pagamento */}
             <div 
-              className="bg-white rounded-xl border border-gray-200 p-6 sm:p-8"
+              className="bg-white rounded-xl border border-gray-200 p-6 sm:p-8 opacity-70"
               data-aos="fade-up"
               data-aos-delay="200"
             >
@@ -263,6 +282,7 @@ export default function RequestPage() {
                     type="radio"
                     className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
                     defaultChecked
+                    disabled
                   />
                   <label htmlFor="credit-card" className="ml-3 block text-sm font-medium text-gray-700">
                     Cartão de Crédito
@@ -275,6 +295,7 @@ export default function RequestPage() {
                     name="payment-method"
                     type="radio"
                     className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
+                    disabled
                   />
                   <label htmlFor="bank-transfer" className="ml-3 block text-sm font-medium text-gray-700">
                     Transferência Bancária
@@ -287,6 +308,7 @@ export default function RequestPage() {
                     name="payment-method"
                     type="radio"
                     className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300"
+                    disabled
                   />
                   <label htmlFor="pix" className="ml-3 block text-sm font-medium text-gray-700">
                     PIX
@@ -303,7 +325,16 @@ export default function RequestPage() {
             >
               <button
                 type="submit"
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors group"
+                className={`inline-flex 
+
+                items-center px-6 py-3 border border-transparent text-base 
+                font-medium rounded-lg shadow-sm text-white bg-blue-600
+                 hover:bg-blue-700 focus:outline-none 
+                 focus:ring-2 focus:ring-offset-2
+                  focus:ring-blue-500 transition-colors group
+                  h-fit
+                  
+                  `}
               >
                 Enviar Solicitação
                 <ArrowRightIcon className="ml-2 h-5 w-5 text-blue-300 group-hover:text-blue-200 transition-colors" />

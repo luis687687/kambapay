@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ArrowRightIcon, EnvelopeIcon, LockClosedIcon, UserIcon, PhoneIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { signUp } from '@/app/services/userServices';
 
 interface FormData {
   firstName: string;
@@ -31,10 +32,26 @@ export function SignUpForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Validação e submissão do formulário
-    console.log('Form data submitted:', formData);
+    
+    try {
+      if(formData.password != formData.confirmPassword) throw Error("Erro, password")
+      if(formData.password.length < 6 ) throw Error("Erro, password inprópria")
+
+      signUp({
+        email:formData.email,
+        name:formData.firstName,
+        nicname:formData.lastName, 
+        phone:formData.phone,
+        password:formData.password
+      }).then(console.log).catch(console.error)
+    }
+    catch(ex) {
+      console.log(ex, " Erro capturado")
+      //mensagem de erro com modal
+    }
+    
   };
 
   return (

@@ -3,13 +3,26 @@ from ..db.db import cmd
 
 cmd.execute(""" 
     create table if not exists user(
-            id char(36) primary key,
-            name varchar(100)
+                  id char(36) primary key,
+            name varchar(100),
+            nicname varchar(100)
 
             )
             
             
             """)
+cmd.execute(""" 
+  create table if not exists contacts (
+  id char(36) primary key, 
+  user_id char(36),
+  phone varchar(20),
+  foreign key (user_id) references user(id)
+  )
+""")
+
+
+
+
 
 cmd.execute(
   """
@@ -41,15 +54,30 @@ cmd.execute(
 
 cmd.execute(
   """
-  create table if not exists score(
+  create table if not exists request(
     id char(36) primary key,
     user_id char(36),
-    score int(11),
-    totaldragons int(11),
-    totalmashrooms int(11),
-    leavel int(11),
+    description text,
+    link text,
+    trackingURL text,
+    prestations int(11),
+    status int(3),
     createdAt datetime,
+    updateAt datetime,
     foreign key (user_id) references user(id)
   )
   """
 )
+
+
+cmd.execute(""" 
+  create table if not exists delivery (
+  id char(36) primary key, 
+  request_id char(36),
+  phone varchar(20),
+  email varchar(100),
+  addres text,
+  obs text,
+  foreign key (request_id) references request(id)
+  )
+""")

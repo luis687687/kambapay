@@ -1,13 +1,17 @@
 "use client"
 // components/auth/AuthForm.js
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { ArrowRightIcon, EnvelopeIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from "next/Link"
+import { AuthContext } from "@/app/context/auth-context"
+
 export function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const {signIn} = useContext(AuthContext)
+
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -39,7 +43,10 @@ export function AuthForm() {
             </p>
           </div>
 
-          <form className="mt-8 space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="mt-8 space-y-6" onSubmit={(e) =>{ 
+            e.preventDefault()
+            signIn({email, password})
+          }}>
             <div className="rounded-md space-y-4">
               {!isLogin && (
                 <div>
@@ -130,6 +137,7 @@ export function AuthForm() {
             <div>
               <button
                 type="submit"
+                
                 className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">

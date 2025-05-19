@@ -197,7 +197,7 @@ export default function HistoryPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-semibold text-gray-900">
-                          {request.price}
+                         (AKZ) Valor em negociação
                         </p>
                         <button 
                           onClick={() => router.push(`/request/${request.id}`)}
@@ -220,7 +220,7 @@ export default function HistoryPage() {
                           <div className="flex items-center space-x-2 text-sm bg-gray-50 px-3 py-1.5 rounded-lg">
                             <TruckIcon className="h-4 w-4 text-gray-500" />
                             <span className="text-gray-700">Código de rastreio:</span>
-                            <span className="font-medium">{request.trackingCode}</span>
+                            <span className="font-medium">brevemente</span>
                           </div>
                         )}
                       </div>

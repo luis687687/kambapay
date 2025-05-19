@@ -1,5 +1,5 @@
 // services/productServices.ts
-import { apiFetch } from '../api/apiConfig'; // Ajuste o caminho conforme necessário
+import { apiFetch } from './api/apiConfig'; // Ajuste o caminho conforme necessário
 import {
   Product,
   ProductSearchParams,
