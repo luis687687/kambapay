@@ -39,17 +39,8 @@ def get_delivery_by_id(delivery_id):
 
 def get_deliveries_by_request(request_id):
     cmd.execute("SELECT * FROM delivery WHERE request_id = %s", (request_id,))
-    rows = cmd.fetchall()
-    return [
-        {
-            "id": row[0],
-            "request_id": row[1],
-            "phone": row[2],
-            "email": row[3],
-            "address": row[4],
-            "obs": row[5]
-        } for row in rows
-    ]
+    row = cmd.fetchall()[0]
+    return row
 
 
 def update_delivery(delivery_id, phone=None, email=None, address=None, obs=None):

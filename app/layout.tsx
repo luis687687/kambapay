@@ -2,6 +2,7 @@
 import {useEffect} from "react"
 import {AuthProvider} from "@/app/context/auth-context"
 import "./globals.css";
+import { SidebarMenu } from "./components/slide-menu";
 
 
 
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
+          <SidebarMenu />
           {children}
         </AuthProvider>
       </body>

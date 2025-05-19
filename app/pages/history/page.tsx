@@ -1,6 +1,6 @@
 // pages/history.tsx
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   ArrowRightIcon, 
@@ -12,6 +12,13 @@ import {
   CreditCardIcon
 } from '@heroicons/react/24/outline';
 import Head from 'next/head';
+import { listRequestsByUser } from '@/app/services/requestServices';
+
+
+import { AuthContext } from '@/app/context/auth-context';
+import { useContext } from 'react';
+import { list } from 'postcss';
+
 
 type RequestStatus = 'completed' | 'processing' | 'cancelled' | 'shipped';
 
@@ -27,46 +34,52 @@ interface RequestItem {
 
 export default function HistoryPage() {
   const router = useRouter();
+  const { user } = useContext(AuthContext);
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
   // Dados de exemplo
-  const requests: RequestItem[] = [
-    {
-      id: 'RQ-78945',
-      product: 'iPhone 15 Pro 256GB - Azul',
-      date: '15/05/2023',
-      status: 'completed',
-      price: 'R$ 5.799,00',
-      trackingCode: 'AB123456789BR',
-      lastUpdate: 'Entregue em 22/05/2023'
-    },
-    {
-      id: 'RQ-78946',
-      product: 'Nike Air Jordan 1 Retro High OG',
-      date: '18/05/2023',
-      status: 'shipped',
-      price: 'R$ 1.299,00',
-      trackingCode: 'CD987654321BR',
-      lastUpdate: 'Enviado em 20/05/2023'
-    },
-    {
-      id: 'RQ-78947',
-      product: 'PlayStation 5 + Controle Extra',
-      date: '20/05/2023',
-      status: 'processing',
-      price: 'R$ 4.599,00',
-      lastUpdate: 'Em negociação com vendedor'
-    },
-    {
-      id: 'RQ-78948',
-      product: 'Relógio Casio G-Shock DW5600',
-      date: '10/05/2023',
-      status: 'cancelled',
-      price: 'R$ 899,00',
-      lastUpdate: 'Cancelado em 12/05/2023'
-    },
-  ];
+  // const requests: RequestItem[] = [
+  //   {
+  //     id: 'RQ-78945',
+  //     product: 'iPhone 15 Pro 256GB - Azul',
+  //     date: '15/05/2023',
+  //     status: 'completed',
+  //     price: 'R$ 5.799,00',
+  //     trackingCode: 'AB123456789BR',
+  //     lastUpdate: 'Entregue em 22/05/2023'
+  //   },
+  //   {
+  //     id: 'RQ-78946',
+  //     product: 'Nike Air Jordan 1 Retro High OG',
+  //     date: '18/05/2023',
+  //     status: 'shipped',
+  //     price: 'R$ 1.299,00',
+  //     trackingCode: 'CD987654321BR',
+  //     lastUpdate: 'Enviado em 20/05/2023'
+  //   },
+  //   {
+  //     id: 'RQ-78947',
+  //     product: 'PlayStation 5 + Controle Extra',
+  //     date: '20/05/2023',
+  //     status: 'processing',
+  //     price: 'R$ 4.599,00',
+  //     lastUpdate: 'Em negociação com vendedor'
+  //   },
+  //   {
+  //     id: 'RQ-78948',
+  //     product: 'Relógio Casio G-Shock DW5600',
+  //     date: '10/05/2023',
+  //     status: 'cancelled',
+  //     price: 'R$ 899,00',
+  //     lastUpdate: 'Cancelado em 12/05/2023'
+  //   },
+  // ];
 
+
+  const [requests, setRequests] = useState<RequestItem[]>([]);
+
+
+  
   const filteredRequests = activeFilter === 'all' 
     ? requests 
     : requests.filter(req => req.status === activeFilter);
@@ -86,6 +99,13 @@ export default function HistoryPage() {
     }
   };
 
+  const statusArray = [
+    { id: 'shipped', label: 'Enviado' },
+    { id: 'processing', label: 'Em andamento' },
+    { id: 'completed', label: 'Concluído' },
+    { id: 'cancelled', label: 'Cancelado' },
+    
+  ];
   const getStatusColor = (status: RequestStatus) => {
     switch (status) {
       case 'completed':
@@ -100,6 +120,38 @@ export default function HistoryPage() {
         return 'bg-gray-100 text-gray-800';
     }
   };
+
+
+  const listAllRequests = async () => {
+    
+    // const response = await listRequestsByUser(userId);
+    // setRequests(response);
+
+    setRequests([])
+    const response  = await listRequestsByUser(user.user_id);
+
+    response.map((request: any) => {
+      setRequests((prev) => [...prev, {
+        id:request.id,
+        // id: request.id,
+        product: request.description,
+        date: request.created_at,
+        status: statusArray[request.status].id as RequestStatus,
+        price: request.prestations,
+        trackingCode: "brevemente",
+        lastUpdate:  statusArray[request.status].label+" em " +request.updated_at
+      }])
+
+    })
+
+    
+  }
+  useEffect(() => { 
+
+    listAllRequests();
+    
+    }, []);
+
 
   return (
     <>
@@ -168,6 +220,7 @@ export default function HistoryPage() {
                   }`}
                   data-aos="fade-up"
                   data-aos-delay={index * 50}
+                  onClick={() => router.push(`/pages/request/${request.id}`)}
                 >
                   <div className="p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -182,7 +235,7 @@ export default function HistoryPage() {
                             {request.product}
                           </h3>
                           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
-                            <span>#{request.id}</span>
+                            <span>#{request.id.substring(0,7)}</span>
                             <span>•</span>
                             <span>{request.date}</span>
                             <span>•</span>

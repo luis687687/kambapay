@@ -1,6 +1,6 @@
 // components/TopBar.tsx
 "use client"
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { 
   BellIcon, 
   QuestionMarkCircleIcon,
@@ -8,34 +8,37 @@ import {
   UserPlusIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline';
-import { Avatar } from './Avatar';
+import { Avatar } from './avatar';
 import { APP_ROUTE } from "@/utils/constants";
+import { AuthContext } from "@/app/context/auth-context";
+
+
 import Link from "next/link";
 
 export function TopBar() {
   // Estado para simular autenticação - na prática viria de um contexto/state global
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
+  const { user , isOpen, setIsOpen} = useContext(AuthContext);
   return (
     <header className="sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Menu Mobile (Hamburger) */}
-        <div className="flex md:hidden">
-          <button className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>   
-        </div>
+        
 
         <div className="flex items-center justify-between h-16">
+          {/* Menu Mobile (Hamburger) */}
+          <div className="flex md:hidden">
+            <button className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none"
+              onClick={ () => setIsOpen(!isOpen) }
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>   
+          </div>
+
           {/* Logo e Navegação Primária */}
           <div className="flex items-center space-x-6">
-            <div className="flex-shrink-0">
-              <Link href="/" className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
-                kambaPay
-              </Link>
-            </div>
+           <TopBarLogo />
             
             <nav className="hidden md:flex space-x-8">
               {APP_ROUTE.map((item, index) => (
@@ -71,17 +74,17 @@ export function TopBar() {
             <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
             {/* Área de Autenticação */}
-            {isAuthenticated ? (
+            {user ? (
               // Usuário logado - Mostrar Avatar
               <div className="flex items-center space-x-3">
                 <button className="flex items-center space-x-2 focus:outline-none group">
                   <Avatar 
-                    src="/path-to-avatar.jpg" 
-                    alt="User avatar" 
+                    src={user.avatar} 
+                    alt={user.user_name} 
                     size="sm"
                   />
                   <span className="hidden md:inline-block text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors duration-200">
-                    João Silva
+                    {user.user_name}
                   </span>
                 </button>
               </div>
@@ -110,4 +113,15 @@ export function TopBar() {
       </div>
     </header>
   );
+}
+
+
+export const TopBarLogo = () => {
+  return (
+      <div className="flex-shrink-0">
+      <Link href="/" className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
+        kambaPay
+      </Link>
+    </div>
+    )
 }

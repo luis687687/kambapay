@@ -9,7 +9,7 @@ export default function LimitedArea({
 
 
     return (
-        <div className={`w-full max-w-[1000px] m-auto  h-[100px] ${className} ` }>
+        <div className={`w-full max-w-[1000px] m-auto  h-[100px] ${className} px-[var(--space)]` }>
             {children}
         </div>
     )

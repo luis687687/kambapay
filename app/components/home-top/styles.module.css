@@ -1,0 +1,29 @@
+.title {
+    display: none   ;
+}
+
+
+@media screen and (max-width: 850px) {
+  .image {
+
+    height: 300px;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .title {
+    display: initial !important;
+    margin-top: var(--space);
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .container {
+   flex-direction: column-reverse !important;
+  }
+  .image {
+    height: auto;
+    width: auto;
+  }
+}

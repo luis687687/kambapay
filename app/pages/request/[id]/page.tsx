@@ -1,5 +1,5 @@
 "use client"
-// pages/requests/[id].tsx
+// pages/request/[id].tsx
 import { useParams } from 'next/navigation';
 import { 
   ArrowLeftIcon,
@@ -16,6 +16,9 @@ import {
   ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline';
 import Head from 'next/head';
+import { getRequestById, IDelivery, IRequestWithDeliveries } from '@/app/services/requestServices';
+import { useEffect, useState } from 'react';
+
 
 type TimelineEvent = {
   id: string;
@@ -48,56 +51,59 @@ type RequestDetail = {
 export default function RequestDetailPage() {
   const path = useParams();
   const { id } = path;
-
+  const [details, setDetails] = useState<RequestDetail | null>(null);
   // Dados mockados - na prática viria de uma API
-  const request: RequestDetail = {
-    id: id as string || 'RQ-78945',
-    product: 'iPhone 15 Pro 256GB - Azul',
-    description: 'Novo iPhone 15 Pro na cor azul, com 256GB de armazenamento. Preferência por versão desbloqueada e selo da Apple intacto.',
-    productLink: 'https://www.apple.com/iphone-15-pro',
-    status: 'shipped',
-    createdAt: '15/05/2023 às 14:30',
-    updatedAt: '20/05/2023 às 15:45',
-    price: 'R$ 5.799,00',
-    installments: '3x de R$ 1.933,00',
-    paymentMethod: 'Cartão de Crédito - Mastercard',
-    trackingCode: 'AB123456789BR',
-    assistant: {
-      name: 'Ana Silva',
-      contact: 'ana.silva@buyassist.com'
-    },
-    deliveryAddress: 'Av. Paulista, 1000, Apto 123 - São Paulo/SP - CEP: 01310-100',
-    timeline: [
-      {
-        id: '1',
-        date: '20/05/2023 15:45',
-        status: 'Enviado',
-        description: 'Produto despachado pelo vendedor. Código de rastreio: AB123456789BR',
-        isCurrent: true
-      },
-      {
-        id: '2',
-        date: '18/05/2023 11:20',
-        status: 'Pagamento confirmado',
-        description: 'Transação aprovada pelo banco emissor'
-      },
-      {
-        id: '3',
-        date: '16/05/2023 09:15',
-        status: 'Em negociação',
-        description: 'Assistente encontrou o produto por R$ 5.799,00'
-      },
-      {
-        id: '4',
-        date: '15/05/2023 14:30',
-        status: 'Solicitação criada',
-        description: 'Pedido registrado no sistema'
-      }
-    ]
-  };
+  // const request: RequestDetail = {
+  //   id: id as string || 'RQ-78945',
+  //   product: 'iPhone 15 Pro 256GB - Azul',
+  //   description: 'Novo iPhone 15 Pro na cor azul, com 256GB de armazenamento. Preferência por versão desbloqueada e selo da Apple intacto.',
+  //   productLink: 'https://www.apple.com/iphone-15-pro',
+  //   status: 'shipped',
+  //   createdAt: '15/05/2023 às 14:30',
+  //   updatedAt: '20/05/2023 às 15:45',
+  //   price: 'R$ 5.799,00',
+  //   installments: '3x de R$ 1.933,00',
+  //   paymentMethod: 'Cartão de Crédito - Mastercard',
+  //   trackingCode: 'AB123456789BR',
+  //   assistant: {
+  //     name: 'Ana Silva',
+  //     contact: 'ana.silva@buyassist.com'
+  //   },
+  //   deliveryAddress: 'Av. Paulista, 1000, Apto 123 - São Paulo/SP - CEP: 01310-100',
+  //   timeline: [
+  //     {
+  //       id: '1',
+  //       date: '20/05/2023 15:45',
+  //       status: 'Enviado',
+  //       description: 'Produto despachado pelo vendedor. Código de rastreio: AB123456789BR',
+  //       isCurrent: true
+  //     },
+  //     {
+  //       id: '2',
+  //       date: '18/05/2023 11:20',
+  //       status: 'Pagamento confirmado',
+  //       description: 'Transação aprovada pelo banco emissor'
+  //     },
+  //     {
+  //       id: '3',
+  //       date: '16/05/2023 09:15',
+  //       status: 'Em negociação',
+  //       description: 'Assistente encontrou o produto por R$ 5.799,00'
+  //     },
+  //     {
+  //       id: '4',
+  //       date: '15/05/2023 14:30',
+  //       status: 'Solicitação criada',
+  //       description: 'Pedido registrado no sistema'
+  //     }
+  //   ]
+  // };
+
+
+
 
   const getStatusIcon = () => {
-    switch (request.status) {
+    switch (details?.status) {
       case 'processing':
         return <ClockIcon className="h-5 w-5 text-blue-500" />;
       case 'shipped':
@@ -112,7 +118,7 @@ export default function RequestDetailPage() {
   };
 
   const getStatusColor = () => {
-    switch (request.status) {
+    switch (details?.status) {
       case 'processing':
         return 'bg-blue-100 text-blue-800';
       case 'shipped':
@@ -126,10 +132,82 @@ export default function RequestDetailPage() {
     }
   };
 
+
+  useEffect(() => {
+    async function load() {
+      const data: IRequestWithDeliveries = await getRequestById(id as string  );
+      const { request, delivery } = data;
+
+      
+      // Converte status numérico para string
+      const statusMap: Record<number, RequestDetail["status"]> = {
+        0: "processing",
+        1: "shipped",
+        2: "delivered",
+        3: "cancelled",
+      };
+
+      // Monta timeline básica
+      const timeline: TimelineEvent[] =   [
+            {
+              id: '1',
+              date: '20/05/2023 15:45',
+              status: 'Enviado',
+              description: 'Produto despachado pelo vendedor',
+              isCurrent: true
+            },
+            {
+              id: '2',
+              date: '18/05/2023 11:20',
+              status: 'Pagamento confirmado',
+              description: 'Transação aprovada pelo banco emissor'
+            },
+            {
+              id: '3',
+              date: '16/05/2023 09:15',
+              status: 'Em negociação',
+              description: 'Assistente encontrou o produto'
+            },
+            {
+              id: '4',
+              date: request.created_at,
+              status: 'Solicitação criada',
+              description: 'Pedido registrado no sistema'
+            }
+          ]
+
+   
+
+      setDetails({
+        id: request.id || "—", // ID da requisição
+        product: request.description,            // usa a descrição como título
+        description: delivery?.obs || "—", // sem info no modelo; preencha depois
+        productLink: request.link,
+        status: statusMap[request.status] ?? "processing",
+        createdAt: request.created_at,
+        updatedAt: request.updated_at,
+        price: "Em negociação",                               // não existe preço no modelo, preencha depois
+        installments: String(request.prestations),
+        paymentMethod: "Cartão de Crédito",       // placeholder; ajuste se tiver esse dado
+        trackingCode: request.tracking_url || undefined,
+        assistant: {
+          name: "Luis Domingos Marques",                              // sem info no modelo; preencha depois
+          contact: "luismarque687@gmail.com",
+        },
+        deliveryAddress: delivery?.addres ?? "—",
+        timeline,
+      });
+    }
+
+    load();
+  }, [id]);
+
+  if (!details) return <div>Carregando…</div>;
+
   return (
     <>
       <Head>
-        <title>Solicitação #{request.id} - buyAssist</title>
+        <title>Solicitação #{details?.id} - buyAssist</title>
       </Head>
 
       <div className="min-h-screen ">
@@ -140,20 +218,20 @@ export default function RequestDetailPage() {
           <div className="mb-8" data-aos="fade-down">
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <h1 className="text-2xl font-bold text-gray-900">
-                Solicitação #{request.id}
+                Solicitação #{details?.id}
               </h1>
               <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor()}`}>
                 {getStatusIcon()}
                 <span className="ml-2">
-                  {request.status === 'processing' && 'Em processamento'}
-                  {request.status === 'shipped' && 'Enviado'}
-                  {request.status === 'delivered' && 'Entregue'}
-                  {request.status === 'cancelled' && 'Cancelado'}
+                  {details?.status === 'processing' && 'Em processamento'}
+                  {details?.status === 'shipped' && 'Enviado'}
+                  {details?.status === 'delivered' && 'Entregue'}
+                  {details?.status === 'cancelled' && 'Cancelado'}
                 </span>
               </span>
             </div>
             <p className="text-gray-500">
-              Criado em {request.createdAt} • Atualizado em {request.updatedAt}
+              Criado em {details?.createdAt} • Atualizado em {details?.updatedAt}
             </p>
           </div>
 
@@ -170,13 +248,13 @@ export default function RequestDetailPage() {
               </h2>
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-1">{request.product}</h3>
-                  <p className="text-gray-600">{request.description}</p>
+                  <h3 className="font-medium text-gray-900 mb-1">{details?.product}</h3>
+                  <p className="text-gray-600">{details?.description}</p>
                 </div>
                 
-                {request.productLink && (
+                {details?.productLink && (
                   <a 
-                    href={request.productLink} 
+                    href={details?.productLink} 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-600 hover:text-blue-500 transition-colors"
@@ -201,15 +279,15 @@ export default function RequestDetailPage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Valor total:</span>
-                  <span className="font-medium">{request.price}</span>
+                  <span className="font-medium">{details?.price}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Parcelamento:</span>
-                  <span className="font-medium">{request.installments}</span>
+                  <span className="font-medium">{details?.installments}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Método de pagamento:</span>
-                  <span className="font-medium">{request.paymentMethod}</span>
+                  <span className="font-medium">{details?.paymentMethod}</span>
                 </div>
               </div>
             </div>
@@ -226,12 +304,12 @@ export default function RequestDetailPage() {
               <div className="space-y-3">
                 <div>
                   <p className="text-gray-600 mb-1">Endereço:</p>
-                  <p className="font-medium">{request.deliveryAddress}</p>
+                  <p className="font-medium">{details?.deliveryAddress}</p>
                 </div>
-                {request.trackingCode && (
+                {details?.trackingCode && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Código de rastreio:</span>
-                    <span className="font-medium">{request.trackingCode}</span>
+                    <span className="font-medium">{details?.trackingCode}</span>
                   </div>
                 )}
               </div>
@@ -250,15 +328,15 @@ export default function RequestDetailPage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Nome:</span>
-                  <span className="font-medium">{request.assistant.name}</span>
+                  <span className="font-medium">{details?.assistant.name}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Contato:</span>
                   <a 
-                    href={`mailto:${request.assistant.contact}`}
+                    href={`mailto:${details?.assistant.contact}`}
                     className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
                   >
-                    {request.assistant.contact}
+                    {details?.assistant.contact}
                   </a>
                 </div>
               </div>
@@ -275,7 +353,7 @@ export default function RequestDetailPage() {
               Histórico de Atualizações
             </h2>
             <div className="space-y-6">
-              {request.timeline.map((event) => (
+              {details?.timeline.map((event) => (
                 <div 
                   key={event.id} 
                   className="flex"
@@ -286,7 +364,7 @@ export default function RequestDetailPage() {
                     <div className={`w-3 h-3 rounded-full ${
                       event.isCurrent ? 'bg-blue-500 ring-4 ring-blue-200' : 'bg-gray-300'
                     }`}></div>
-                    {event.id !== request.timeline.length.toString() && (
+                    {event.id !== details?.timeline.length.toString() && (
                       <div className="w-px h-full bg-gray-200"></div>
                     )}
                   </div>

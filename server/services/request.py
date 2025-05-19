@@ -70,7 +70,7 @@ def get_request_by_id(request_id: str) -> dict:
 
 def list_requests_by_user(user_id: str) -> list:
     """List all requests for a given user."""
-    return cmd.execute(
+    cmd.execute(
         """
         SELECT
             id, user_id, description, link,
@@ -85,6 +85,11 @@ def list_requests_by_user(user_id: str) -> list:
         (user_id,)
     )
 
+    lis = cmd.fetchall() 
+    for i in range(len(lis)):
+        lis[i]["created_at"] = lis[i]["created_at"].isoformat()
+        lis[i]["updated_at"] = lis[i]["updated_at"].isoformat()
+    return lis  
 
 def update_request(request_id: str,
                    description: str = None,

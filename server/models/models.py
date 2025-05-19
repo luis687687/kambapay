@@ -44,7 +44,7 @@ cmd.execute(
   create table if not exists session(
   id char(36) primary key,
   user_id char(36),
-  createdAt datetime default CURRENT_TIMESTAMP,
+  createdAt datetime,
   expireAt datetime,
   foreign key (user_id) references user(id)
   )

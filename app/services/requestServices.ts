@@ -2,6 +2,7 @@
 
 import { apiFetch } from "./api";
 
+
 export interface IRequest {
   id?: string;
   user_id: string;
@@ -19,7 +20,7 @@ export interface IDelivery {
   request_id: string;
   phone: string;
   email: string;
-  address: string;
+  addres: string;
   obs?: string;
 }
 
@@ -36,6 +37,11 @@ export interface ICombinedPayload {
   obs?: string;
 }
 
+
+export interface IRequestWithDeliveries {
+  request: IRequest;
+  delivery: IDelivery;
+}
 /**
  * Cria uma requisição + entrega (rota POST /request)
  */
@@ -46,7 +52,7 @@ export async function createRequestWithDelivery(
     method: "post",
     body: JSON.stringify(payload),
   });
-  return response;
+  return response as { request: IRequest; delivery: IDelivery };
 }
 
 /**
@@ -54,11 +60,13 @@ export async function createRequestWithDelivery(
  */
 export async function getRequestById(
   requestId: string
-): Promise<IRequest> {
+): Promise<IRequestWithDeliveries> {
+  console.log("requestId ", `/request/${requestId}`);
   const response = await apiFetch(`/request/${requestId}`, {
     method: "get",
   });
-  return response;
+  console.log("response ", response);
+  return response as IRequestWithDeliveries;
 }
 
 /**
@@ -67,10 +75,13 @@ export async function getRequestById(
 export async function listRequestsByUser(
   userId: string
 ): Promise<IRequest[]> {
+
+  console.log("userId ", `/requests/user/${userId}`);
+
   const response = await apiFetch(`/requests/user/${userId}`, {
     method: "get",
   });
-  return response;
+  return response as IRequest[];
 }
 
 export interface IRequestUpdatePayload {
@@ -92,7 +103,7 @@ export async function updateRequestById(
     method: "post",
     body: JSON.stringify(updates),
   });
-  return response;
+  return response as IRequest;
 }
 
 export interface IDeliveryCreatePayload {
@@ -113,6 +124,6 @@ export async function createDelivery(
     method: "post",
     body: JSON.stringify(payload),
   });
-  return response;
+  return response as IDelivery;
 }
 

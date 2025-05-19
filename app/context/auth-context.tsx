@@ -5,12 +5,25 @@ import {getProfile}  from '../services/userServices';
 import { useRouter } from 'next/navigation';
 import {login} from "@/app/services/userServices"
 
+
+export interface IUser {
+
+  user_id: string;
+  user_name: string;
+  user_email: string;
+  avatar: string;
+  user_phone: string;
+  // Adicione outros campos conforme necessário
+}
+
 interface AuthContextType {
-  user: any; // Substitua por seu tipo de usuário
+  user: IUser; // Substitua por seu tipo de usuário
   isAuthenticated: boolean;
   isLoading: boolean;
   signIn: ({email, password} : {email:string, password:string}) => void;
   logout: () => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>(null!);
@@ -18,6 +31,8 @@ export const AuthContext = createContext<AuthContextType>(null!);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState(getProfile());
   const [isLoading, setIsLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
 
   const isAuthenticated = !!user;
@@ -60,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, signIn, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, signIn, logout, isOpen, setIsOpen }}>
       {children}
     </AuthContext.Provider>
   );

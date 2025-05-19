@@ -6,6 +6,7 @@ import { ArrowRightIcon, ShoppingCartIcon, MapPinIcon, CreditCardIcon, PhoneIcon
 import Head from 'next/head';
 import { AuthContext } from "@/app/context/auth-context"
 import { createRequestWithDelivery } from "@/app/services/requestServices";
+import styles from "./styles.module.css"
 
 
 type FormData = {
@@ -101,7 +102,7 @@ export default function RequestPage() {
           </div>
 
           {/* Formulário */}
-          <form onSubmit={handleSubmit} className="space-y-8 grid grid-cols-2 gap-x-6">
+          <form onSubmit={handleSubmit} className={"space-y-8 grid grid-cols-2 gap-x-6 "+styles.form}>
             {/* Seção 1: Detalhes do Produto */}
             <div 
               className="bg-white rounded-xl border border-gray-200 p-6 sm:p-8"

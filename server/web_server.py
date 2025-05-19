@@ -17,7 +17,7 @@ from .services.delivery import (
     create_delivery, get_delivery_by_id,
     get_deliveries_by_request
 )
-from .services.combined import create_combined_request_and_delivery
+from .services.combined import create_combined_request_and_delivery, get_request_with_delivery
 from ._utils import validate_pass
 
 HOST = "0.0.0.0"
@@ -77,7 +77,7 @@ def handle_create_request(handler, data):
 
 
 def handle_get_request(handler, request_id):
-    req = get_request_by_id(request_id)
+    req = get_request_with_delivery(request_id)
     if req:
         send_json(handler, req)
     else:
@@ -125,7 +125,8 @@ class RequestRouter(BaseHTTPRequestHandler):
             return super().do_GET()
         # API routes
         if path.startswith('/request/'):
-            _, _, rid = path.partition('/')
+            _, _, rid = path.partition('request/')
+            
             handle_get_request(self, rid)
         elif '/requests/user/' in path:
             _, _, uid = path.partition('requests/user/')
